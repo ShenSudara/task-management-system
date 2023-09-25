@@ -18,7 +18,6 @@ const taskSchema = new mongoose.Schema({
 
   taskDescription: {
     type: String,
-    required: false,
     minlength: 5,
     maxlength: 2000,
     match: [/^(.|\s)*[a-zA-Z]+(.|\s)*$/, "please provide valid description"],

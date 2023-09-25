@@ -86,7 +86,7 @@ const login = async (req, res) => {
     throw new BadRequest(
       "UserLogin",
       "ValidationError",
-      "Missing Required Properties"
+      "missing required properties"
     );
   }
 
