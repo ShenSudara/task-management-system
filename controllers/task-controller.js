@@ -4,6 +4,8 @@ const taskValidatorModel = require("../utils/validators/models/task-validator");
 const userModel = require("../models/db-models/user-model");
 const InternalServerError = require("../errors/internal-server-error");
 const { StatusCodes } = require("http-status-codes");
+const taskModel = require("../models/db-models/task-model");
+const Created = require("../models/responses/created");
 
 const createTask = async (req, res) => {
   const reqPayLoad = req.body;
@@ -35,7 +37,9 @@ const createTask = async (req, res) => {
       "unable to find logged user"
     );
   }
-  req.user.userObjectId = await userModel.findOne({ userId: req.user.userId });
+  reqPayLoad.userObjectId = await userModel.findOne({
+    userId: req.user.userId,
+  });
 
   //Data validation
   try {
@@ -59,7 +63,31 @@ const createTask = async (req, res) => {
   }
 
   //Save to the database
-  return res.status(StatusCodes.CREATED).json({ message: "Hello world" });
+  //Preping data for saving
+  const savedTask = await taskModel.create({
+    taskName: reqPayLoad.taskName,
+    taskDescription: reqPayLoad.taskDescription,
+    startedAt: reqPayLoad.startedAt,
+    endAt: reqPayLoad.endAt,
+    isCompleted: reqPayLoad.isCompleted,
+    user: reqPayLoad.userObjectId,
+    lastCreated: new Date(),
+    lastUpdated: new Date(),
+    activeStatus: true,
+  });
+
+  //send response to the user
+  const createdResponse = new Created(
+    true,
+    "createTask",
+    "created",
+    "task created."
+  );
+  return res
+    .status(createdResponse.statusCode)
+    .json(createdResponse.getResponse());
 };
 
-module.exports = { createTask };
+const getAllTasks = async (req, res) => {};
+
+module.exports = { createTask, getAllTasks };
