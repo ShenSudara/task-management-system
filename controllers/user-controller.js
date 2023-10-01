@@ -22,10 +22,9 @@ const getUser = async (req, res) => {
       "user is not available"
     );
   }
-  console.log(loggedUser);
 
   //Prepare data
-  const response = new Ok(true, "getUser", "User Infomation", "", [
+  const response = new Ok(true, "getUser", "user infomation", "", [
     {
       _id: loggedUser._id,
       userId: loggedUser.userId,
@@ -35,6 +34,7 @@ const getUser = async (req, res) => {
       joinOn: new Date(loggedUser.lastCreated),
     },
   ]);
+
   res.status(response.statusCode).json(response.getResponse());
 };
 
