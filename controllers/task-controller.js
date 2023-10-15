@@ -1,6 +1,6 @@
 const BadRequest = require("../errors/bad-request");
 const UnprocessableEntity = require("../errors/unprocessable-entity");
-const taskValidatorModel = require("../utils/validators/models/task-validator");
+const taskValidatorModel = require("../utils/validators/input-validators/models/task-validator");
 const userModel = require("../models/db-models/user-model");
 const InternalServerError = require("../errors/internal-server-error");
 const { StatusCodes } = require("http-status-codes");

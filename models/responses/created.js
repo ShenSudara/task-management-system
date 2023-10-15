@@ -1,5 +1,8 @@
 const { StatusCodes } = require("http-status-codes");
 
+/**
+ * This file includes a class for output a response of when resource is created
+ */
 class Created {
   constructor(status, src, title, message = "", messages = []) {
     this.statusCode = StatusCodes.CREATED;

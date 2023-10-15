@@ -1,6 +1,20 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
+
+/**
+ * This file includes a mongoose model for the users.
+ * this have following functions
+ * functions related to mongoose model
+ * create automatic id when user saving
+ * create a hash for the password when user saving
+ * user verify function for user logging
+ * create jwt token for the user for manage the session
+ * save a token for the user when user registering to verify the user
+ * create a login url for the user registration
+ *
+ */
 
 const userSchema = new mongoose.Schema({
   userId: {
@@ -32,6 +46,16 @@ const userSchema = new mongoose.Schema({
   userPassword: {
     type: String,
     required: true,
+  },
+
+  isVerified: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
+
+  lastVerifyToken: {
+    type: String,
   },
 
   lastCreated: {
@@ -79,7 +103,7 @@ userSchema.methods.verifyUser = async function (userEmail, userPassword) {
 
 //Create a json web token for user
 userSchema.methods.createJwt = async function () {
-  return jwt.sign(
+  return await jwt.sign(
     { userId: this.userId, userEmail: this.userEmail },
     process.env.JWT_SECRET,
     {
@@ -88,4 +112,13 @@ userSchema.methods.createJwt = async function () {
   );
 };
 
+//create a verification url for the user
+userSchema.pre("save", async function () {
+  const token = await crypto.randomUUID();
+  this.lastVerifyToken = token;
+});
+
+userSchema.methods.createVerifyToken = async function () {
+  return `http://localhost:3000/api/v1/auth/confirm?token=${this.lastVerifyToken}`;
+};
 module.exports = mongoose.model("users", userSchema);

@@ -1,5 +1,9 @@
 const { StatusCodes } = require("http-status-codes");
 
+/**
+ * this file includes a class for output a response of bad request error
+ */
+
 class BadRequest extends Error {
   constructor(src, title, message = "", errors = []) {
     super(message);

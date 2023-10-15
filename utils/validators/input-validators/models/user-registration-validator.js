@@ -1,6 +1,10 @@
 const joi = require("joi");
 const joiValidator = require("../validator");
 
+/**
+ * this files includes a joi validation rules for validating the properties of when users are registering
+ */
+
 const userRegistrationValidatorSchema = joi.object({
   userFirstName: joi
     .string()

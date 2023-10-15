@@ -3,6 +3,9 @@ const connectDatabase = require("./config/database-config");
 
 require("dotenv").config({ path: "./config/.env" });
 
+/**
+ * starting point of the application
+ */
 const start = async () => {
   try {
     await connectDatabase(process.env.MONGO_URI);
